@@ -15,7 +15,7 @@ function Chatbot() {
   const [category, setCategory] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const API = "http://43.231.78.189:3000/api/chat";
+  const API = "https://chatbotbackend.mentorslearning.com/api/chat";
   
   // Initial categories
   const initialCategories = [
