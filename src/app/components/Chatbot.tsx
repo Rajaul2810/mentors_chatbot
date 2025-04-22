@@ -2,7 +2,7 @@
 import axios from 'axios';
 import React, { useState, useEffect, useRef } from 'react';
 import { FaPaperPlane, FaRobot, FaUser } from 'react-icons/fa';
-import { IoMdClose } from 'react-icons/io';
+import { IoMdArrowBack, IoMdClose } from 'react-icons/io';
 
 function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,6 +14,7 @@ function Chatbot() {
   const [conversationStarted, setConversationStarted] = useState(false);
   const [category, setCategory] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   const API = "https://chatbotbackend.mentorslearning.com/api/chat";
   
@@ -24,12 +25,41 @@ function Chatbot() {
     "Technical Info",
   ];
 
+  // Check if device is mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   // Scroll to bottom of messages
   useEffect(() => {
     if (messagesEndRef.current) {
       (messagesEndRef.current as HTMLElement).scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages]);
+
+  // Handle keyboard appearance on mobile
+  useEffect(() => {
+    const handleResize = () => {
+      if (isOpen && isMobile) {
+        // Adjust the chat container when keyboard appears
+        const viewportHeight = window.innerHeight;
+        const chatContainer = document.getElementById('chat-container');
+        if (chatContainer) {
+          chatContainer.style.height = `${viewportHeight - 20}px`;
+        }
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isOpen, isMobile]);
 
   const sendMessageToAPI = async (message: string, selectedCategory?: string) => {
     setIsLoading(true);
@@ -82,12 +112,25 @@ function Chatbot() {
     setConversationStarted(true);
   };
 
+  const toggleChat = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleBackButton = () => {
+    // Reset conversation state to show categories menu again
+    setConversationStarted(false);
+    setCategory("");
+    setMessages([
+      { text: "Hello! Please select a category to start a conversation.", sender: "Mentors" }
+    ]);
+  };
+
   return (
-    <div className="fixed bottom-5 right-5 z-50">
+    <div className={`${isOpen && isMobile ? 'fixed inset-0 z-50' : 'fixed bottom-5 right-5 z-50'}`}>
       {/* Chat button */}
       {!isOpen && (
         <button 
-          onClick={() => setIsOpen(true)}
+          onClick={toggleChat}
           className="bg-red-600 hover:bg-red-700 text-white rounded-full p-4 shadow-lg transition-all duration-300 flex items-center justify-center"
         >
           <FaRobot className="text-xl" />
@@ -96,15 +139,28 @@ function Chatbot() {
 
       {/* Chat window */}
       {isOpen && (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl flex flex-col w-80 sm:w-96 h-96 border border-gray-200 dark:border-gray-700">
+        <div 
+          id="chat-container"
+          className={`bg-white dark:bg-gray-800 flex flex-col border border-gray-200 dark:border-gray-700 ${
+            isMobile 
+              ? 'h-full w-full rounded-none' 
+              : 'w-80 sm:w-96 h-96 rounded-lg shadow-xl'
+          }`}
+        >
           {/* Header */}
-          <div className="bg-blue-600 text-white p-4 rounded-t-lg flex justify-between items-center">
+          <div className="bg-blue-600 text-white p-4 flex justify-between items-center rounded-t-lg">
+          <button 
+              onClick={handleBackButton}
+              className="text-white hover:bg-blue-700 rounded-full p-1"
+            >
+              <IoMdArrowBack className="text-xl" />
+            </button>
             <div className="flex items-center gap-2">
               <FaRobot className="text-xl" />
               <h3 className="font-medium">Mentors Learning Assistant</h3>
             </div>
             <button 
-              onClick={() => setIsOpen(false)}
+              onClick={toggleChat}
               className="text-white hover:bg-blue-700 rounded-full p-1"
             >
               <IoMdClose className="text-xl" />
@@ -172,7 +228,7 @@ function Chatbot() {
           
           {/* Input - only show after conversation has started */}
           {conversationStarted && (
-            <div className="border-t border-gray-200 dark:border-gray-700 p-3">
+            <div className="border-t border-gray-200 dark:border-gray-700 p-3 sticky bottom-0 bg-white dark:bg-gray-800">
               <div className="flex items-center gap-2">
                 <input
                   type="text"
