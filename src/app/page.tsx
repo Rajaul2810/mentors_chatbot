@@ -5,7 +5,7 @@ export default function Home() {
     <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
       <div className="container mx-auto px-4 py-16">
         <div className="text-center mb-16">
-          <h1 className="text-5xl md:text-6xl font-bold text-blue-600 dark:text-blue-400 mb-6 font-sans">Mentors AI Assistant</h1>
+          <h1 className="text-5xl md:text-6xl font-bold text-blue-600 dark:text-blue-400 mb-6 font-sans">Mentors' AI Assistant</h1>
           <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto font-sans">
             Your personal AI assistant for all your learning and mentorship needs
           </p>
