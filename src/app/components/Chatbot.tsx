@@ -7,7 +7,7 @@ import { IoMdArrowBack, IoMdClose } from 'react-icons/io';
 function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { text: "Hello!. I'm the Mentors' AI Assistant. Please select a category to start a conversation.", sender: "Mentors" }
+    { text: "Hello!. I&apos;m the Mentors&apos; AI Assistant. Please select a category to start a conversation.", sender: "Mentors" }
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -105,7 +105,7 @@ function Chatbot() {
     } catch (error) {
       console.log(error);
       setMessages(prev => [...prev, { 
-        text: "Sorry, I couldn't process your request. Please try again.", 
+        text: "Sorry, I couldn&apos;t process your request. Please try again.", 
         sender: "Mentors" 
       }]);
     } finally {
@@ -127,9 +127,9 @@ function Chatbot() {
   const handleCategorySelect = (selectedCategory: string) => {
     setCategory(selectedCategory);
     
-    setMessages([...messages, { text: `I'd like to discuss ${selectedCategory}`, sender: "user" }]);
+    setMessages([...messages, { text: `I&apos;d like to discuss ${selectedCategory}`, sender: "user" }]);
     
-    sendMessageToAPI(`I'd like to discuss ${selectedCategory}`, selectedCategory);
+    sendMessageToAPI(`I&apos;d like to discuss ${selectedCategory}`, selectedCategory);
     
     setConversationStarted(true);
   };
@@ -142,7 +142,7 @@ function Chatbot() {
     setConversationStarted(false);
     setCategory("");
     setMessages([
-      { text: "Hello! Please select a category to start a conversation.", sender: "Mentors" }
+      { text: "Hello!. I&apos;m the Mentors&apos; AI Assistant. Please select a category to start a conversation.", sender: "Mentors" }
     ]);
   };
 
@@ -178,7 +178,7 @@ function Chatbot() {
             </button>
             <div className="flex items-center gap-2">
               <FaRobot className="text-lg" />
-              <h3 className="font-medium text-sm">Mentors' AI Assistant</h3>
+              <h3 className="font-medium text-sm">Mentors&apos; AI Assistant</h3>
             </div>
             <button 
               onClick={toggleChat}
