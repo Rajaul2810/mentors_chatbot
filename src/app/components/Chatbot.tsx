@@ -7,7 +7,7 @@ import { IoMdArrowBack, IoMdClose } from 'react-icons/io';
 function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { text: "Hello! Please select a category to start a conversation.", sender: "Mentors" }
+    { text: "Hello!. I'm the Mentors' AI Assistant. Please select a category to start a conversation.", sender: "Mentors" }
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
