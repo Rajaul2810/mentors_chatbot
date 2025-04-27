@@ -7,23 +7,23 @@ import { IoMdArrowBack, IoMdClose } from 'react-icons/io';
 function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { text: "Hello!. I'm the Mentors&apos; AI Assistant. Please select a category to start a conversation.", sender: "Mentors" }
+    { text: "Hello!. I'm the Mentors' AI Assistant. I will help you with your queries.", sender: "Mentors" }
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [conversationStarted, setConversationStarted] = useState(false);
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("Course & Mock Info");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
 
   const API = "https://chatbotbackend.mentorslearning.com/api/chat"; //https://chatbotbackend.mentorslearning.com/
   
   // Initial categories
-  const initialCategories = [
-    "Course & Mock Info",
-    "Batch Info", 
-    "Technical Info",
-  ];
+  // const initialCategories = [
+  //   "Course & Mock Info",
+  //   "Batch Info", 
+  //   "Technical Info",
+  // ];
 
   // Check if device is mobile
   useEffect(() => {
@@ -62,32 +62,40 @@ function Chatbot() {
 
   // Function to convert URLs in text to clickable links
   const formatMessageWithLinks = (text: string) => {
-    const urlRegex = /\[(.*?)\]\((https?:\/\/[^\s]+)\)/g;
+    // Regular expression to match URLs
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
     
-    if (!text.match(urlRegex)) {
+    // Split the text by URLs
+    const parts = text.split(urlRegex);
+    
+    // If no URLs found, return the text as is
+    if (parts.length === 1) {
       return text;
     }
     
-    const parts = text.split(urlRegex);
-    const matches = Array.from(text.matchAll(urlRegex));
-    
+    // Map through parts and create links for URLs
     return (
       <>
-        {parts.map((part, i) => (
-          <React.Fragment key={i}>
-            {part}
-            {matches[i] && (
-              <a 
-                href={matches[i][2]} 
-                target="_blank" 
+        {parts.map((part, i) => {
+          // If the part is a URL (odd index), create a link
+          if (i % 2 === 1) {
+            // Remove any trailing brackets from the URL
+            const cleanUrl = part.replace(/[)\]]+$/, '');
+            return (
+              <a
+                key={i}
+                href={cleanUrl}
+                target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-400 underline hover:text-blue-300 break-all"
+                className="text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 underline break-all"
               >
-                {matches[i][1]}
+                {cleanUrl}
               </a>
-            )}
-          </React.Fragment>
-        ))}
+            );
+          }
+          // If the part is not a URL (even index), return as text
+          return part;
+        })}
       </>
     );
   };
@@ -142,7 +150,7 @@ function Chatbot() {
     setConversationStarted(false);
     setCategory("");
     setMessages([
-      { text: "Hello!. I'm the Mentors&apos; AI Assistant. Please select a category to start a conversation.", sender: "Mentors" }
+      { text: "Hello!. I'm the Mentors'; AI Assistant. Please select a category to start a conversation.", sender: "Mentors" }
     ]);
   };
 
@@ -234,16 +242,16 @@ function Chatbot() {
           {/* Category buttons */}
           {!conversationStarted && (
             <div className="p-3 border-t border-gray-200 dark:border-gray-700 flex flex-col gap-2">
-              {initialCategories.map((categoryItem, index) => (
+              {/* {initialCategories.map((categoryItem, index) => ( */}
                 <button
-                  key={index}
-                  onClick={() => handleCategorySelect(categoryItem)}
+                 
+                  onClick={() => handleCategorySelect(category)}
                   className="bg-blue-100 hover:bg-blue-200 dark:bg-blue-800 dark:hover:bg-blue-700 text-blue-800 dark:text-blue-200 text-sm rounded-full px-3 py-2 transition-colors w-full"
                   disabled={isLoading}
                 >
-                  {categoryItem}
+                 Get Started
                 </button>
-              ))}
+              {/* ))} */}
             </div>
           )}
           
