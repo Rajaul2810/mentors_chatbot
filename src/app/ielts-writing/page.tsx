@@ -23,7 +23,7 @@ interface AssessmentData {
 
 const IELTSWriting = () => {
   const [answer, setAnswer] = useState('');
-  const [timeLeft, setTimeLeft] = useState(60); // 60 minutes for task 1
+  // const [timeLeft, setTimeLeft] = useState(60); // 60 minutes for task 1
   const [question, setQuestion] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [response, setResponse] = useState<AssessmentData | null>(null);
@@ -153,7 +153,7 @@ const IELTSWriting = () => {
             <h1 className="text-2xl font-bold text-gray-800 dark:text-white">IELTS Writing Task 1</h1>
             <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
               <FaRegClock className="text-xl" />
-              <span className="font-semibold">{timeLeft} minutes left</span>
+              <span className="font-semibold">60 minutes </span>
             </div>
           </div>
 

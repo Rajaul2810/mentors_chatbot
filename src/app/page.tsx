@@ -1,6 +1,6 @@
 import Chatbot from "./components/Chatbot";
 import Link from "next/link";
-import { FaPen, FaRobot, FaGraduationCap, FaClock, FaRocket } from "react-icons/fa";
+import { FaPen, FaGraduationCap, FaClock, FaRocket } from "react-icons/fa";
 
 export default function Home() {
   return (
