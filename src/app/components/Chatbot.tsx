@@ -16,15 +16,8 @@ function Chatbot() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
 
-  const API = "https://chatbotbackend.mentorslearning.com/api/chat"; //https://chatbotbackend.mentorslearning.com/
+  const API = "https://chatbotbackend.mentorslearning.com/api/chat";
   
-  // Initial categories
-  // const initialCategories = [
-  //   "Course & Mock Info",
-  //   "Batch Info", 
-  //   "Technical Info",
-  // ];
-
   // Check if device is mobile
   useEffect(() => {
     const checkMobile = () => {
@@ -60,55 +53,55 @@ function Chatbot() {
     return () => window.removeEventListener('resize', handleResize);
   }, [isOpen, isMobile]);
 
-  // Function to convert URLs in text to clickable links
+  // Function to convert URLs in text to clickable links with improved formatting
   const formatMessageWithLinks = (text: string) => {
-    // Regular expression to match URLs
+    // Regular expression to detect URLs
     const urlRegex = /(https?:\/\/[^\s]+)/g;
-    
-    // Split the text by URLs
+  
     const parts = text.split(urlRegex);
-    
-    // If no URLs found, return the text as is
-    if (parts.length === 1) {
-      return text;
-    }
-    
-    // Map through parts and create links for URLs
-    return (
-      <>
-        {parts.map((part, i) => {
-          // If the part is a URL (odd index), create a link
-          if (i % 2 === 1) {
-            // Remove any trailing brackets from the URL
-            const cleanUrl = part.replace(/[)\]]+$/, '');
-            return (
-              <a
-                key={i}
-                href={cleanUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 underline break-all"
-              >
-                {cleanUrl}
-              </a>
-            );
-          }
-          // If the part is not a URL (even index), return as text
-          return part;
-        })}
-      </>
-    );
+  
+    return parts.map((part, index) => {
+      if (part.match(urlRegex)) {
+        // Clean trailing characters like ) or .
+        let cleanURL = part;
+        let trailing = "";
+  
+        while (cleanURL.endsWith(')') || cleanURL.endsWith('.') || cleanURL.endsWith(',')) {
+          trailing = cleanURL.slice(-1) + trailing;
+          cleanURL = cleanURL.slice(0, -1);
+        }
+  
+        return (
+          <React.Fragment key={index}>
+            <a 
+              href={cleanURL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 dark:text-blue-400 underline break-words"
+            >
+              {cleanURL}
+            </a>
+            {trailing}
+          </React.Fragment>
+        );
+      } else {
+        return <span key={index}>{part}</span>;
+      }
+    });
   };
+  
+  
+  
 
-  const sendMessageToAPI = async (message: string, selectedCategory?: string) => {
+  const sendMessageToAPI = async (message: string) => {
     setIsLoading(true);
-    
+   
     try {
       const response = await axios.post(API, {
         message: message,
-        category: selectedCategory || category
+        category: "Course & Mock Info"
       });
-      
+      console.log('response.data.response',response.data.response)
       setMessages(prev => [...prev, { text: response.data.response, sender: "Mentors" }]);
     } catch (error) {
       console.log(error);
@@ -135,9 +128,11 @@ function Chatbot() {
   const handleCategorySelect = (selectedCategory: string) => {
     setCategory(selectedCategory);
     
-    setMessages([...messages, { text: `I'd like to discuss ${selectedCategory}`, sender: "user" }]);
-    
-    sendMessageToAPI(`I'd like to discuss ${selectedCategory}`, selectedCategory);
+    // Add initial message from Mentors
+    setMessages(prev => [...prev, { 
+      text: "How can I assist you today? I can help you with course information, mock tests, and any other queries you may have.", 
+      sender: "Mentors" 
+    }]);
     
     setConversationStarted(true);
   };
@@ -150,7 +145,7 @@ function Chatbot() {
     setConversationStarted(false);
     setCategory("");
     setMessages([
-      { text: "Hello!. I'm the Mentors'; AI Assistant. Please select a category to start a conversation.", sender: "Mentors" }
+      { text: "Hello!. I'm the Mentors' AI Assistant. I will help you with your queries.", sender: "Mentors" }
     ]);
   };
 
@@ -214,8 +209,11 @@ function Chatbot() {
                     message.sender === "user" 
                       ? "bg-blue-600 text-white rounded-tr-none" 
                       : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-tl-none"
-                  }`}>
+                  }`}
+               
+                  >
                     {formatMessageWithLinks(message.text)}
+                    {/* {message.text} */}
                   </div>
                 </div>
               </div>
