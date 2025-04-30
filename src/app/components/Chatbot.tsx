@@ -1,5 +1,6 @@
 "use client"
 import axios from 'axios';
+import Image from 'next/image';
 import React, { useState, useEffect, useRef } from 'react';
 import { FaPaperPlane, FaRobot, FaUser } from 'react-icons/fa';
 import { IoMdArrowBack, IoMdClose } from 'react-icons/io';
@@ -12,12 +13,17 @@ function Chatbot() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [conversationStarted, setConversationStarted] = useState(false);
-  const [category, setCategory] = useState("Course & Mock Info");
+  const [category, setCategory] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
 
-  const API = "https://chatbotbackend.mentorslearning.com/api/chat";
+  const API = "http://localhost:5000/api/chat"; // https://chatbotbackend.mentorslearning.com/api/chat
   
+ const initialCategories =[
+  "Course & Mock Info",
+  "Study Abroad Info"
+ ]
+
   // Check if device is mobile
   useEffect(() => {
     const checkMobile = () => {
@@ -99,7 +105,7 @@ function Chatbot() {
     try {
       const response = await axios.post(API, {
         message: message,
-        category: "Course & Mock Info"
+        category: category
       });
       console.log('response.data.response',response.data.response)
       setMessages(prev => [...prev, { text: response.data.response, sender: "Mentors" }]);
@@ -130,7 +136,7 @@ function Chatbot() {
     
     // Add initial message from Mentors
     setMessages(prev => [...prev, { 
-      text: "How can I assist you today? I can help you with course information, mock tests, and any other queries you may have.", 
+      text: "How can I assist you today?", 
       sender: "Mentors" 
     }]);
     
@@ -155,9 +161,9 @@ function Chatbot() {
       {!isOpen && (
         <button 
           onClick={toggleChat}
-          className="bg-red-600 hover:bg-red-700 text-white rounded-full p-3 md:p-4 shadow-lg transition-all duration-300 flex items-center justify-center"
+          className=""
         >
-          <FaRobot className="text-lg md:text-xl" />
+          <Image src="/mentorsAi.gif" alt="Chatbot" width={50} height={50} unoptimized className='rounded-full border-2 border-white' />
         </button>
       )}
 
@@ -240,16 +246,16 @@ function Chatbot() {
           {/* Category buttons */}
           {!conversationStarted && (
             <div className="p-3 border-t border-gray-200 dark:border-gray-700 flex flex-col gap-2">
-              {/* {initialCategories.map((categoryItem, index) => ( */}
+            {initialCategories.map((categoryItem, index) => (
                 <button
-                 
-                  onClick={() => handleCategorySelect(category)}
+                  key={index}
+                  onClick={() => handleCategorySelect(categoryItem)}
                   className="bg-blue-100 hover:bg-blue-200 dark:bg-blue-800 dark:hover:bg-blue-700 text-blue-800 dark:text-blue-200 text-sm rounded-full px-3 py-2 transition-colors w-full"
                   disabled={isLoading}
                 >
-                 Get Started
+                {categoryItem}
                 </button>
-              {/* ))} */}
+              ))} 
             </div>
           )}
           
