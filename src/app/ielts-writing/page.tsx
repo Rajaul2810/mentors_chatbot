@@ -1,8 +1,7 @@
 'use client';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
-import { FaRegClock, FaChartBar, FaLink, FaBook, FaSpellCheck, FaArrowLeft, FaPaperPlane } from 'react-icons/fa';
-import { IoMdCheckmarkCircle, IoMdCloseCircle } from 'react-icons/io';
+import {FaArrowLeft, FaPaperPlane } from 'react-icons/fa';
 import WritingProgess from '../components/WritingProgess';
 import AssessmentResult from '../components/AssessmentResult';
 
@@ -194,7 +193,7 @@ const IELTSWriting = () => {
             <span>Back</span>
           </Link>
           <div className='my-4'>
-            <h1 className="text-2xl font-bold text-gray-600 text-center">Mentors' Writing Practice</h1>
+            <h1 className="text-2xl font-bold text-gray-600 text-center">Mentors&apos; Writing Practice</h1>
             <div className='text-gray-400 text-center'>Submissions left today: {getRemainingSubmissions()}</div>
           </div>
           <WritingProgess />
