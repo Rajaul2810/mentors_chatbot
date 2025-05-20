@@ -12,10 +12,6 @@ interface Question {
 
 interface AssessmentCriteria {
   score: number;
-  strengths: string[];
-  improvements: string[];
-  feedback: string;
-  examples?: string[];
 }
 
 interface AssessmentData {
@@ -36,6 +32,11 @@ interface AssessmentData {
   AiSuggestions: string;
   AiMotivation: string;
   AiGenerateWriting: string;
+  TotalVocabularyError:string;
+  TotalSentenceError:string;
+  TotalGrammerError:string;
+  ReWriteCorrectVersion:string;
+  ReWriteImprovementVersion:string;
 }
 
 const IELTSWriting = () => {
@@ -61,6 +62,7 @@ const IELTSWriting = () => {
           })
         });
         const data = await response.json();
+        //console.log('question', data);
         if (data.question) {
           setQuestion(data.question);
         } else {
@@ -108,6 +110,7 @@ const IELTSWriting = () => {
     setError('');
 
     try {
+      //console.log('question', question);
       const submitData = {
         message: answer,
         questionId: question?.id,
@@ -132,7 +135,7 @@ const IELTSWriting = () => {
       }
 
       const data = await responseData.json();
-      console.log('api response', data);
+      //console.log('api response', data);
       const submission = data?.submission;
       if (submission) {
         setResponse({
@@ -146,7 +149,12 @@ const IELTSWriting = () => {
           feedback: submission.feedback,
           AiSuggestions: submission.AiSuggestions,
           AiMotivation: submission.AiMotivation,
-          AiGenerateWriting: submission.AiGenerateWriting
+          AiGenerateWriting: submission.AiGenerateWriting,
+          TotalVocabularyError:submission.TotalVocabularyError,
+          TotalSentenceError:submission.TotalSentenceError,
+          TotalGrammerError:submission.TotalGrammerError,
+          ReWriteCorrectVersion:submission.ReWriteCorrectVersion,
+          ReWriteImprovementVersion:submission.ReWriteImprovementVersion
         });
       }
 

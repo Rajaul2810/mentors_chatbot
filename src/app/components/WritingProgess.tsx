@@ -45,8 +45,8 @@ const WritingProgess = () => {
             <div className="flex items-center gap-2 md:gap-3 w-fit bg-gradient-to-r from-teal-500 to-teal-600 rounded-full py-2 px-2 md:px-6">
                 <FaChartLine className="text-md md:text-2xl text-white" />
                 <div className='flex items-center gap-1'>
-                    <h3 className="text-white text-sm">Score: </h3>
-                    <p className="text-white text-sm font-bold">{progressData.averageScore.toFixed(1)}</p>
+                    <h3 className="text-white text-sm">Avg Score: </h3>
+                    <p className="text-white text-sm font-bold">{(progressData.averageScore * 10).toFixed(1)}%</p>
                 </div>
             </div>
 
