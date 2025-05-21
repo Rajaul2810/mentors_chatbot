@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaChartBar, FaLink, FaBook, FaSpellCheck, FaTrophy, FaLightbulb, FaCheck, FaArrowUp } from 'react-icons/fa';
+import { FaChartBar, FaLink, FaBook, FaSpellCheck, FaTrophy, FaLightbulb, FaArrowUp } from 'react-icons/fa';
 import MistakeAndCorrect from './MistakeAndCorrect';
 interface AssessmentCriteria {
   score: number;
