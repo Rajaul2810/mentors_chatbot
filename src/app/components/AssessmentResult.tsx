@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaChartBar, FaLink, FaBook, FaSpellCheck, FaTrophy, FaLightbulb, FaCheck, FaArrowUp } from 'react-icons/fa';
-
+import MistakeAndCorrect from './MistakeAndCorrect';
 interface AssessmentCriteria {
   score: number;
 }
@@ -23,16 +23,22 @@ interface AssessmentData {
   AiSuggestions: string;
   AiMotivation: string;
   AiGenerateWriting: string;
-  TotalVocabularyError:string;
-  TotalSentenceError:string;
-  TotalGrammerError:string;
-  ReWriteCorrectVersion:string;
-  ReWriteImprovementVersion:string;
-
+  TotalVocabularyError: string;
+  TotalSentenceError: string;
+  TotalGrammerError: string;
+  ReWriteImprovementVersion: string;
+  listofWords: {
+    mistake: string[];
+    correct: string[];
+  };
+  listofSentences: {
+    mistake: string[];
+    correct: string[];
+  };
 }
 
 const AssessmentResult: React.FC<{ data: AssessmentData }> = ({ data }) => {
- 
+  console.log('data s', data);
   const getScoreColor = (score: number | undefined): string => {
     if (!score) return 'text-gray-600';
     if (score >= 7) return 'text-green-600';
@@ -53,7 +59,7 @@ const AssessmentResult: React.FC<{ data: AssessmentData }> = ({ data }) => {
               <div className="p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
                 <FaTrophy className="text-2xl text-blue-600 dark:text-blue-400" />
               </div>
-              <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Overall Band Score</h2>
+              <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Overall Predicted Score</h2>
             </div>
 
             <div className={`text-5xl font-bold ${getScoreColor(data?.score?.overallBandScore)} bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 p-4 rounded-xl`}>
@@ -86,46 +92,47 @@ const AssessmentResult: React.FC<{ data: AssessmentData }> = ({ data }) => {
               <div className="text-xl font-bold text-gray-800 dark:text-white">{data?.TotalGrammerError}</div>
             </div>
 
-            <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
+            <div className={`bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg ${data?.AiGenerateWriting > '10%' ? 'bg-red-500':'bg-green-500'}`}>
               <div className="flex items-center gap-2 mb-1">
                 <FaSpellCheck className="text-blue-500" />
                 <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Using AI</span>
               </div>
-              <div className="text-xl font-bold text-gray-800 dark:text-white">{data?.AiGenerateWriting}</div>
+              <div className="text-xl font-bold text-gray-800 dark:text-white">{data?.AiGenerateWriting > '10%' ? 'Yes' : 'No'}</div>
             </div>
           </div>
           {
             data?.feedback && (
-              <div className="text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">{data?.feedback}</div>
+              <div className="text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-wrap my-2">{data?.feedback}</div>
             )
           }
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div className="group relative overflow-hidden bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-green-100 dark:bg-green-800/20 rounded-full -mr-16 -mt-16 blur-2xl group-hover:blur-3xl transition-all duration-300"></div>
-              <div className="relative">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2 bg-green-100 dark:bg-green-800/30 rounded-lg">
-                    <FaCheck className="text-xl text-green-600 dark:text-green-400" />
-                  </div>
-                  <span className="text-base font-semibold text-gray-700 dark:text-gray-200">Correct Version</span>
-                </div>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">{data?.ReWriteCorrectVersion}</p>
-              </div>
-            </div>
 
-            <div className="group relative overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-blue-100 dark:bg-blue-800/20 rounded-full -mr-16 -mt-16 blur-2xl group-hover:blur-3xl transition-all duration-300"></div>
-              <div className="relative">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2 bg-blue-100 dark:bg-blue-800/30 rounded-lg">
-                    <FaArrowUp className="text-xl text-blue-600 dark:text-blue-400" />
-                  </div>
-                  <span className="text-base font-semibold text-gray-700 dark:text-gray-200">Improved Version</span>
+          <div className="px-4 py-8 max-w-5xl mx-auto space-y-8">
+            <MistakeAndCorrect
+              title="📝 Word Mistakes"
+              mistakes={data?.listofWords.mistake}
+              corrections={data?.listofWords.correct}
+            />
+            <MistakeAndCorrect
+              title="📘 Sentence Mistakes"
+              mistakes={data?.listofSentences.mistake}
+              corrections={data?.listofSentences.correct}
+            />
+          </div>
+
+          <div className="group relative overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 my-3">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-blue-100 dark:bg-blue-800/20 rounded-full -mr-16 -mt-16 blur-2xl group-hover:blur-3xl transition-all duration-300"></div>
+            <div className="relative">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-blue-100 dark:bg-blue-800/30 rounded-lg">
+                  <FaArrowUp className="text-xl text-blue-600 dark:text-blue-400" />
                 </div>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">{data?.ReWriteImprovementVersion}</p>
+                <span className="text-base font-semibold text-gray-700 dark:text-gray-200">Improved Version</span>
               </div>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">{data?.ReWriteImprovementVersion}</p>
             </div>
           </div>
+
+
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="group relative overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300">

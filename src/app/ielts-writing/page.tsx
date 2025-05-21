@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
-import {FaArrowLeft, FaPaperPlane } from 'react-icons/fa';
+import { FaArrowLeft, FaPaperPlane } from 'react-icons/fa';
 import WritingProgess from '../components/WritingProgess';
 import AssessmentResult from '../components/AssessmentResult';
 
@@ -32,11 +32,18 @@ interface AssessmentData {
   AiSuggestions: string;
   AiMotivation: string;
   AiGenerateWriting: string;
-  TotalVocabularyError:string;
-  TotalSentenceError:string;
-  TotalGrammerError:string;
-  ReWriteCorrectVersion:string;
-  ReWriteImprovementVersion:string;
+  TotalVocabularyError: string;
+  TotalSentenceError: string;
+  TotalGrammerError: string;
+  ReWriteImprovementVersion: string;
+  listofWords: {
+    mistake: string[];
+    correct: string[];
+  };
+  listofSentences: {
+    mistake: string[];
+    correct: string[];
+  };
 }
 
 const IELTSWriting = () => {
@@ -150,11 +157,12 @@ const IELTSWriting = () => {
           AiSuggestions: submission.AiSuggestions,
           AiMotivation: submission.AiMotivation,
           AiGenerateWriting: submission.AiGenerateWriting,
-          TotalVocabularyError:submission.TotalVocabularyError,
-          TotalSentenceError:submission.TotalSentenceError,
-          TotalGrammerError:submission.TotalGrammerError,
-          ReWriteCorrectVersion:submission.ReWriteCorrectVersion,
-          ReWriteImprovementVersion:submission.ReWriteImprovementVersion
+          TotalVocabularyError: submission.TotalVocabularyError,
+          TotalSentenceError: submission.TotalSentenceError,
+          TotalGrammerError: submission.TotalGrammerError,
+          ReWriteImprovementVersion: submission.ReWriteImprovementVersion,
+          listofWords: submission.listofWords,
+          listofSentences: submission.listofSentences
         });
       }
 
@@ -222,6 +230,16 @@ const IELTSWriting = () => {
                 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200"
               placeholder="Write your answer here..."
               disabled={isLoading}
+              spellCheck="false"
+              autoCorrect="off"
+              autoComplete="off"
+              autoCapitalize="off"
+              data-gramm="false"
+              data-gramm-editor="false"
+              data-enable-grammarly="false"
+              onPaste={(e) => e.preventDefault()}
+              onDrop={(e) => e.preventDefault()}
+              onContextMenu={(e) => e.preventDefault()}
             />
           </div>
 
