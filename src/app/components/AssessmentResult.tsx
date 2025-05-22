@@ -109,13 +109,13 @@ const AssessmentResult: React.FC<{ data: AssessmentData }> = ({ data }) => {
           <div className="px-4 py-8 max-w-5xl mx-auto space-y-8">
             <MistakeAndCorrect
               title="📝 Word Mistakes"
-              mistakes={data?.listofWords.mistake}
-              corrections={data?.listofWords.correct}
+              mistakes={data?.listofWords?.mistake}
+              corrections={data?.listofWords?.correct}
             />
             <MistakeAndCorrect
               title="📘 Sentence Mistakes"
-              mistakes={data?.listofSentences.mistake}
-              corrections={data?.listofSentences.correct}
+              mistakes={data?.listofSentences?.mistake}
+              corrections={data?.listofSentences?.correct}
             />
           </div>
 

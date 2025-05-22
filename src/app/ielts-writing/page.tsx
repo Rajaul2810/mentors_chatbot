@@ -255,7 +255,7 @@ const IELTSWriting = () => {
             </div>
             <button
               onClick={handleSubmit}
-              disabled={getRemainingSubmissions() <= 0 || isLoading}
+              disabled={getRemainingSubmissions() <= 0 || isLoading || answer.trim().length === 0}
               className={`
                 flex items-center gap-2
                 ${getRemainingSubmissions() <= 0
