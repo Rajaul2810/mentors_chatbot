@@ -1,6 +1,5 @@
 import React from 'react';
-import { FaChartBar, FaLink, FaBook, FaSpellCheck, FaTrophy, FaLightbulb, FaArrowUp } from 'react-icons/fa';
-import MistakeAndCorrect from './MistakeAndCorrect';
+import { FaChartBar, FaLink, FaBook, FaSpellCheck, FaTrophy, FaLightbulb, FaArrowUp, FaExclamationTriangle, FaExclamationCircle } from 'react-icons/fa';
 interface AssessmentCriteria {
   score: number;
 }
@@ -27,14 +26,8 @@ interface AssessmentData {
   TotalSentenceError: string;
   TotalGrammerError: string;
   ReWriteImprovementVersion: string;
-  listofWords: {
-    mistake: string[];
-    correct: string[];
-  };
-  listofSentences: {
-    mistake: string[];
-    correct: string[];
-  };
+  ReWriteCorrectWords: string;
+  ReWriteCorrectSentences: string;
 }
 
 const AssessmentResult: React.FC<{ data: AssessmentData }> = ({ data }) => {
@@ -92,7 +85,7 @@ const AssessmentResult: React.FC<{ data: AssessmentData }> = ({ data }) => {
               <div className="text-xl font-bold text-gray-800 dark:text-white">{data?.TotalGrammerError}</div>
             </div>
 
-            <div className={`bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg ${data?.AiGenerateWriting > '10%' ? 'bg-red-500':'bg-green-500'}`}>
+            <div className={`bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg ${data?.AiGenerateWriting > '10%' ? 'bg-red-500' : 'bg-green-500'}`}>
               <div className="flex items-center gap-2 mb-1">
                 <FaSpellCheck className="text-blue-500" />
                 <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Using AI</span>
@@ -106,18 +99,39 @@ const AssessmentResult: React.FC<{ data: AssessmentData }> = ({ data }) => {
             )
           }
 
-          <div className="px-4 py-8 max-w-5xl mx-auto space-y-8">
-            <MistakeAndCorrect
-              title="📝 Word Mistakes"
-              mistakes={data?.listofWords?.mistake}
-              corrections={data?.listofWords?.correct}
-            />
-            <MistakeAndCorrect
-              title="📘 Sentence Mistakes"
-              mistakes={data?.listofSentences?.mistake}
-              corrections={data?.listofSentences?.correct}
-            />
-          </div>
+          {data?.ReWriteCorrectWords && data?.ReWriteCorrectSentences && (
+            <div className="px-4 py-8 space-y-8">
+              <div className="group relative overflow-hidden bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-red-100 dark:bg-red-800/20 rounded-full -mr-16 -mt-16 blur-2xl group-hover:blur-3xl transition-all duration-300"></div>
+                <div className="relative">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-2 bg-red-100 dark:bg-red-800/30 rounded-lg">
+                      <FaExclamationTriangle className="text-xl text-red-600 dark:text-red-400" />
+                    </div>
+                    <span className="text-xl font-bold text-gray-800 dark:text-white">Word Mistakes</span>
+                  </div>
+                  <div className="text-gray-600 dark:text-gray-300 leading-8 whitespace-pre-wrap bg-white/50 dark:bg-gray-800/50 p-4 rounded-lg">
+                    {data?.ReWriteCorrectWords}
+                  </div>
+                </div>
+              </div>
+
+              <div className="group relative overflow-hidden bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-100 dark:bg-yellow-800/20 rounded-full -mr-16 -mt-16 blur-2xl group-hover:blur-3xl transition-all duration-300"></div>
+                <div className="relative">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-2 bg-yellow-100 dark:bg-yellow-800/30 rounded-lg">
+                      <FaExclamationCircle className="text-xl text-yellow-600 dark:text-yellow-400" />
+                    </div>
+                    <span className="text-xl font-bold text-gray-800 dark:text-white">Sentence Mistakes</span>
+                  </div>
+                  <div className="text-gray-600 dark:text-gray-300 leading-8 whitespace-pre-wrap bg-white/50 dark:bg-gray-800/50 p-4 rounded-lg">
+                    {data?.ReWriteCorrectSentences}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="group relative overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 my-3">
             <div className="absolute top-0 right-0 w-32 h-32 bg-blue-100 dark:bg-blue-800/20 rounded-full -mr-16 -mt-16 blur-2xl group-hover:blur-3xl transition-all duration-300"></div>

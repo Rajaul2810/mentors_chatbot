@@ -1,7 +1,6 @@
 import Chatbot from "./components/Chatbot";
 import Link from "next/link";
 import { FaPen, FaGraduationCap, FaClock, FaRocket } from "react-icons/fa";
-
 export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-white dark:from-gray-900 dark:via-blue-900 dark:to-gray-800 transition-colors duration-300">

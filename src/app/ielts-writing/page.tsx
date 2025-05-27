@@ -36,14 +36,9 @@ interface AssessmentData {
   TotalSentenceError: string;
   TotalGrammerError: string;
   ReWriteImprovementVersion: string;
-  listofWords: {
-    mistake: string[];
-    correct: string[];
-  };
-  listofSentences: {
-    mistake: string[];
-    correct: string[];
-  };
+  ReWriteCorrectWords: string;
+  ReWriteCorrectSentences: string;
+
 }
 
 const IELTSWriting = () => {
@@ -161,8 +156,8 @@ const IELTSWriting = () => {
           TotalSentenceError: submission.TotalSentenceError,
           TotalGrammerError: submission.TotalGrammerError,
           ReWriteImprovementVersion: submission.ReWriteImprovementVersion,
-          listofWords: submission.listofWords,
-          listofSentences: submission.listofSentences
+          ReWriteCorrectWords: submission.ReWriteCorrectWords,
+          ReWriteCorrectSentences: submission.ReWriteCorrectSentences
         });
       }
 
@@ -214,6 +209,27 @@ const IELTSWriting = () => {
           </div>
           <WritingProgess />
 
+
+          <div className='bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-6'>
+            <h2 className="text-lg font-semibold mb-2 text-gray-700 dark:text-gray-200">Note *:</h2>
+            <ul className='list-disc text-gray-600 dark:text-gray-300 text-xs'>
+              <li>
+                <span>আপনি প্রতিদিন মাত্র ১টি সাবমিশন করতে পারবেন। তাই ভালোভাবে প্রস্তুতি নিয়ে সময় নিয়ে সাবমিট করুন।</span>
+              </li>
+              <li>
+                <span>চ্যাটজিপিটি, ক্লড ইত্যাদি কোন AI টুল ব্যবহার করে উত্তর লিখবেন না।</span>
+              </li>
+              <li>
+                <span>আপনার উত্তর কমপক্ষে ১০০টি শব্দ হতে হবে। ১০০ শব্দের কম লিখলে আপনি সাবমিট বাটনে ক্লিক করতে পারবেন না।</span>
+              </li>
+              <li>
+                <span>সাবমিট করার পর দয়া করে আপনার উত্তর ভালোভাবে পর্যালোচনা করুন। আপনি কোথায় ভুল করেছেন তা বোঝার চেষ্টা করুন।</span>
+              </li>
+              <li>
+                <span>সাবমিট করার পর অনুগ্রহ করে পৃষ্ঠাটি রিফ্রেশ করবেন না। প্রথমে ফলাফল ভালোভাবে দেখুন, তারপর পৃষ্ঠা থেকে বের হোন।</span>
+              </li>
+            </ul>
+          </div>
           <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-6">
             <h2 className="text-lg font-semibold mb-2 text-gray-700 dark:text-gray-200">Question:</h2>
             <p className="text-gray-600 dark:text-gray-300">
@@ -255,10 +271,10 @@ const IELTSWriting = () => {
             </div>
             <button
               onClick={handleSubmit}
-              disabled={getRemainingSubmissions() <= 0 || isLoading || answer.trim().length === 0}
+              disabled={getRemainingSubmissions() <= 0 || isLoading || answer.trim().length === 0 || answer.trim().split(/\s+/).length < 100}
               className={`
                 flex items-center gap-2
-                ${getRemainingSubmissions() <= 0
+                ${getRemainingSubmissions() <= 0 || answer.trim().split(/\s+/).length < 100
                   ? 'bg-gray-400 cursor-not-allowed'
                   : 'bg-gradient-to-r from-blue-900 to-indigo-900 hover:from-blue-700 hover:to-indigo-700'
                 }
