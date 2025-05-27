@@ -82,7 +82,7 @@ const IELTSWriting = () => {
       const submissionData = localStorage.getItem('writingSubmissions');
       if (submissionData) {
         const { date, count } = JSON.parse(submissionData);
-        if (date === today && count >= 2) {
+        if (date === today && count >= 1) {
           setError('You have reached your daily submission limit. Please try again tomorrow.');
         }
       }
@@ -101,7 +101,7 @@ const IELTSWriting = () => {
       const { date, count } = JSON.parse(submissionData);
       if (date === today) {
         currentCount = count;
-        if (currentCount >= 2) {
+        if (currentCount >= 1) {
           setError('You have reached your daily submission limit. Please try again tomorrow.');
           return;
         }
@@ -175,7 +175,7 @@ const IELTSWriting = () => {
   };
 
   const getRemainingSubmissions = () => {
-    if (typeof window === 'undefined') return 2;
+    if (typeof window === 'undefined') return 1;
 
     const today = new Date().toDateString();
     try {
@@ -183,13 +183,13 @@ const IELTSWriting = () => {
       if (submissionData) {
         const { date, count } = JSON.parse(submissionData);
         if (date === today) {
-          return Math.max(0, 2 - count);
+          return Math.max(0, 1 - count);
         }
       }
     } catch (error) {
       console.error('Error accessing localStorage:', error);
     }
-    return 2;
+    return 1;
   };
 
   return (
