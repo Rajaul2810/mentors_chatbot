@@ -28,6 +28,8 @@ interface AssessmentData {
   ReWriteImprovementVersion: string;
   ReWriteCorrectWords: string;
   ReWriteCorrectSentences: string;
+  topic: string;
+  content: string;
 }
 
 const AssessmentResult: React.FC<{ data: AssessmentData }> = ({ data }) => {
@@ -43,7 +45,24 @@ const AssessmentResult: React.FC<{ data: AssessmentData }> = ({ data }) => {
 
   return (
     <div className="space-y-6">
+      <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-6">
+        <div className="space-y-4">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">Question</h3>
+            <p className="text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800 p-3 rounded-lg border border-gray-200 dark:border-gray-600">
+              {data?.topic}
+            </p>
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">Your Answer</h3>
+            <p className="text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800 p-3 rounded-lg border border-gray-200 dark:border-gray-600 whitespace-pre-wrap">
+              {data?.content}
+            </p>
+          </div>
+        </div>
+      </div>
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 border border-blue-100 dark:border-blue-900 relative overflow-hidden">
+
         <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-bl-full" />
 
         <div className="relative">
@@ -104,14 +123,17 @@ const AssessmentResult: React.FC<{ data: AssessmentData }> = ({ data }) => {
               <div className="group relative overflow-hidden bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-red-100 dark:bg-red-800/20 rounded-full -mr-16 -mt-16 blur-2xl group-hover:blur-3xl transition-all duration-300"></div>
                 <div className="relative">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="p-2 bg-red-100 dark:bg-red-800/30 rounded-lg">
-                      <FaExclamationTriangle className="text-xl text-red-600 dark:text-red-400" />
+
+                  <div>
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="p-2 bg-red-100 dark:bg-red-800/30 rounded-lg">
+                        <FaExclamationTriangle className="text-xl text-red-600 dark:text-red-400" />
+                      </div>
+                      <span className="text-xl font-bold text-gray-800 dark:text-white">Word Mistakes</span>
                     </div>
-                    <span className="text-xl font-bold text-gray-800 dark:text-white">Word Mistakes</span>
-                  </div>
-                  <div className="text-gray-600 dark:text-gray-300 leading-8 whitespace-pre-wrap bg-white/50 dark:bg-gray-800/50 p-4 rounded-lg">
-                    {data?.ReWriteCorrectWords}
+                    <p className="text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800 leading-8 p-3 rounded-lg border border-gray-200 dark:border-gray-600 whitespace-pre-wrap">
+                      {data?.ReWriteCorrectWords}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -125,9 +147,9 @@ const AssessmentResult: React.FC<{ data: AssessmentData }> = ({ data }) => {
                     </div>
                     <span className="text-xl font-bold text-gray-800 dark:text-white">Sentence Mistakes</span>
                   </div>
-                  <div className="text-gray-600 dark:text-gray-300 leading-8 whitespace-pre-wrap bg-white/50 dark:bg-gray-800/50 p-4 rounded-lg">
+                  <p className="text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800 leading-8 p-3 rounded-lg border border-gray-200 dark:border-gray-600 whitespace-pre-wrap">
                     {data?.ReWriteCorrectSentences}
-                  </div>
+                  </p>
                 </div>
               </div>
             </div>
