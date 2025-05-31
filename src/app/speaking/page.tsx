@@ -198,7 +198,7 @@ export default function SpeakingPractice() {
                 Coming Soon
               </h2>
               <p className="text-gray-500 dark:text-gray-400 text-center max-w-md">
-                We're working hard to bring you an advanced speaking practice platform. Stay tuned for updates!
+                We&apos;re working hard to bring you an advanced speaking practice platform. Stay tuned for updates!
               </p>
             </div>
           </div>

@@ -4,7 +4,7 @@ import { FaArrowLeft, FaPaperPlane } from 'react-icons/fa';
 import WritingProgess from '../components/WritingProgess';
 import AssessmentResult from '../components/AssessmentResult';
 import UserInfoModal from '../components/UserInfoModal';
-import Link from 'next/link';
+
 
 interface Question {
   title: string;
