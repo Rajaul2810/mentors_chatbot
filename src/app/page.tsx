@@ -1,6 +1,6 @@
 import Chatbot from "./components/Chatbot";
 import Link from "next/link";
-import { FaPen, FaGraduationCap, FaClock, FaRocket, FaMicrophone, FaBrain } from "react-icons/fa";
+import { FaPen, FaGraduationCap, FaClock, FaRocket, FaMicrophone, FaBrain, FaGlobe } from "react-icons/fa";
 
 export default function Home() {
   return (
@@ -30,18 +30,18 @@ export default function Home() {
             <div className="transform hover:scale-[1.02] transition-transform duration-300">
               <div className="h-full bg-gradient-to-br from-violet-600 to-indigo-600 dark:from-violet-700 dark:to-indigo-800 rounded-3xl shadow-xl overflow-hidden">
                 <div className="p-8 h-full flex flex-col">
-                  <div className="mb-8">
+                  <div className="mb-4">
                     <div className="w-16 h-16 bg-white/10 backdrop-blur-lg rounded-2xl flex items-center justify-center mb-6">
                       <FaPen className="text-white text-3xl" />
                     </div>
-                    <h3 className="text-3xl font-bold text-white mb-4">IELTS Writing</h3>
-                    <p className="text-white/90 text-lg mb-8">
-                      Advanced AI-powered analysis for IELTS writing tasks
+                    <h3 className="text-3xl font-bold text-white mb-4">AI Writing Tool</h3>
+                    <p className="text-white/90 text-lg mb-4">
+                    AI writing tool to improve general and IELTS writing with feedback, corrections, and smart suggestions.
                     </p>
                   </div>
 
-                  <div className="space-y-4 mb-8 flex-grow">
-                    {['Task Response Analysis', 'Coherence Evaluation', 'Language Feedback'].map((item, index) => (
+                  <div className="space-y-4 mb-4 flex-grow">
+                    {[ 'Smart Suggestions', 'Grammar Correction', 'Vocabulary Improvement', 'Progress Tracking'].map((item, index) => (
                       <div key={index} className="flex items-center space-x-3 text-white/90">
                         <span className="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-full bg-white/20">
                           ✓
@@ -68,18 +68,18 @@ export default function Home() {
             <div className="transform hover:scale-[1.02] transition-transform duration-300">
               <div className="h-full bg-gradient-to-br from-emerald-600 to-teal-600 dark:from-emerald-700 dark:to-teal-800 rounded-3xl shadow-xl overflow-hidden">
                 <div className="p-8 h-full flex flex-col">
-                  <div className="mb-8">
+                  <div className="mb-4">
                     <div className="w-16 h-16 bg-white/10 backdrop-blur-lg rounded-2xl flex items-center justify-center mb-6">
                       <FaMicrophone className="text-white text-3xl" />
                     </div>
-                    <h3 className="text-3xl font-bold text-white mb-4">Speaking Practice</h3>
-                    <p className="text-white/90 text-lg mb-8">
-                      Real-time speaking assessment and feedback
+                    <h3 className="text-3xl font-bold text-white mb-4">AI Speaking Tool</h3>
+                    <p className="text-white/90 text-lg mb-4">
+                    AI-powered general and IELTS speaking practice with real-time feedback and progress tracking.
                     </p>
                   </div>
 
-                  <div className="space-y-4 mb-8 flex-grow">
-                    {['Pronunciation Analysis', 'Fluency Check', 'Grammar Correction'].map((item, index) => (
+                  <div className="space-y-4 mb-4 flex-grow">
+                    {['Fluency Check', 'Grammar Correction', 'Vocabulary Improvement', 'Progress Tracking'].map((item, index) => (
                       <div key={index} className="flex items-center space-x-3 text-white/90">
                         <span className="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-full bg-white/20">
                           ✓
@@ -108,7 +108,7 @@ export default function Home() {
                 <div className="p-8 h-full flex flex-col">
                   <h3 className="text-3xl font-bold text-white mb-8">Start Learning Today</h3>
 
-                  <div className="space-y-6 flex-grow">
+                  <div className="space-y-4  flex-grow">
                     <div className="flex items-center space-x-4 text-white">
                       <div className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-lg flex items-center justify-center shadow-lg">
                         <FaGraduationCap className="text-2xl" />
@@ -136,6 +136,15 @@ export default function Home() {
                       <div>
                         <h4 className="font-semibold text-xl">Career Growth</h4>
                         <p className="text-white/80">Advanced career development tools</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-4 text-white">
+                      <div className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-lg flex items-center justify-center shadow-lg">
+                        <FaGlobe className="text-2xl" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-xl">Study Abroad Support</h4>
+                        <p className="text-white/80">Professional guidance for study abroad</p>
                       </div>
                     </div>
 
