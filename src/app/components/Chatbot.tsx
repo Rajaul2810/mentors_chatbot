@@ -17,7 +17,7 @@ function Chatbot() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
 
-  const API = "https://chatbotbackend.mentorslearning.com/api/chat"; // https://chatbotbackend.mentorslearning.com/api/chat
+  const API = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/chat`; // https://chatbotbackend.mentorslearning.com/api/chat
   
  const initialCategories =[
   "Course & Mock Info",

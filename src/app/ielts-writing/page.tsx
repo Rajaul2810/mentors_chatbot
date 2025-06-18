@@ -81,13 +81,13 @@ const IELTSWriting = () => {
       if (!userInfo) return; // Don't fetch if no user info
 
       try {
-        const response = await fetch('https://chatbotbackend.mentorslearning.com/api/writing/question', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/writing/question`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            mysqlUserId: userInfo.phone, // Using phone as mysqlUserId
+            mysqlUserId: Number(userInfo.phone), // Using phone as mysqlUserId
             name: userInfo.name,
             email: userInfo.email,
             phone: userInfo.phone
@@ -152,14 +152,14 @@ const IELTSWriting = () => {
         message: answer,
         questionId: question?.id,
         questionTitle: question?.title,
-        mysqlUserId: userInfo.phone, // Using phone as mysqlUserId
+        mysqlUserId: Number(userInfo.phone), // Using phone as mysqlUserId
         name: userInfo.name,
         email: userInfo.email,
         phone: userInfo.phone,
         taskType: "Task 1"
       };
 
-      const responseData = await fetch('https://chatbotbackend.mentorslearning.com/api/writing', {
+      const responseData = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/writing`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -239,20 +239,20 @@ const IELTSWriting = () => {
   };
 
   return (
-    <div className="px-4 py-8">
+    <div className="px-4 py-4 bg-amber-50">
       <UserInfoModal
         isOpen={showUserModal}
         onClose={() => setShowUserModal(false)}
         onSave={handleUserInfoSave}
       />
       <div className="">
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 mb-4">
 
-          <div className='my-4'>
+          <div className='my-1'>
             <h1 className="text-2xl font-bold text-gray-600 text-center">Mentors&apos; Writing Practice</h1>
             <div className='text-gray-400 text-center'>Submissions left today: {getRemainingSubmissions()}</div>
           </div>
-          <WritingProgess />
+          <WritingProgess ieltsModule='writing' />
 
 
           <div className='bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-6'>
@@ -294,16 +294,16 @@ const IELTSWriting = () => {
                 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200"
                     placeholder="Write your answer here..."
                     disabled={isLoading}
-                  spellCheck="false"
-                  autoCorrect="off"
-                  autoComplete="off"
-                  autoCapitalize="off"
-                  data-gramm="false"
-                  data-gramm-editor="false"
-                  data-enable-grammarly="false"
-                  onPaste={(e) => e.preventDefault()}
-                  onDrop={(e) => e.preventDefault()}
-                  onContextMenu={(e) => e.preventDefault()}
+                  // spellCheck="false"
+                  // autoCorrect="off"
+                  // autoComplete="off"
+                  // autoCapitalize="off"
+                  // data-gramm="false"
+                  // data-gramm-editor="false"
+                  // data-enable-grammarly="false"
+                  // onPaste={(e) => e.preventDefault()}
+                  // onDrop={(e) => e.preventDefault()}
+                  // onContextMenu={(e) => e.preventDefault()}
                   />
                 </div>
                 <div className="flex justify-between items-center">

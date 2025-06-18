@@ -6,72 +6,107 @@ interface UserInfo {
     phone: string;
 }
 
-interface ProgressData {
+interface WritingProgressData {
     averageScore: number;
-    level: string;
+    writingLevel: string;
     totalSubmissions: number;
+   
 }
 
-const WritingProgess = () => {
+interface SpeakingProgressData {
+    speakingAverageScore: number;
+    speakingLevel: string;
+    speakingTotalSubmissions: number;
+}
+
+const WritingProgess = ({ ieltsModule }: { ieltsModule: string }) => {
     const [user, setUser] = useState<UserInfo>({
         name: '',
         email: '',
         phone: ''
     });
-    const [progressData, setProgressData] = useState<ProgressData>({
-        averageScore: 0,
-        level: '',
-        totalSubmissions: 0
-    });
     
-  
     useEffect(() => {
-        // Load user info from localStorage
         const storedUserInfo = localStorage.getItem('userInfo');
         if (storedUserInfo) {
             setUser(JSON.parse(storedUserInfo));
         }
-      }, []);
+    }, []);
 
+    const [WritingProgressData, setWritingProgressData] = useState<WritingProgressData>({
+        averageScore: 0,
+        writingLevel: '',
+        totalSubmissions: 0,
+    });
+    const [SpeakingProgressData, setSpeakingProgressData] = useState<SpeakingProgressData>({
+        speakingAverageScore: 0,
+        speakingLevel: '',
+        speakingTotalSubmissions: 0
+    });
 
     useEffect(() => {
-        const fetchProgress = async () => {
-            const response = await fetch('https://chatbotbackend.mentorslearning.com/api/writing/progress', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ mysqlUserId: user.phone, name: user.name, email: user.email, phone: user.phone })
-            })
-            const data = await response.json();
-            setProgressData({
-                averageScore: data.averageScore || 0,
-                level: data.level || 'Beginner',
-                totalSubmissions: data.totalSubmissions || 0
-            });
+        if (ieltsModule === 'writing') {
+            const fetchWritingProgress = async () => {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/writing/progress`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ mysqlUserId: Number(user.phone), name: user.name, email: user.email, phone: user.phone })
+                })
+                const data = await response.json();
+                console.log('writing data', data);
+                setWritingProgressData({
+                    averageScore: data.averageScore || 0,
+                    writingLevel: data.writingLevel || 'Beginner',
+                    totalSubmissions: data.totalSubmissions || 0
+                });
+            }
+            fetchWritingProgress();
+
+        } else if (ieltsModule === 'speaking') {
+            const fetchSpeakingProgress = async () => {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/speaking/progress`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ mysqlUserId: Number(user.phone), name: user.name, email: user.email, phone: user.phone })
+                })
+                const data = await response.json();
+                console.log('speaking data', data);
+                setSpeakingProgressData({
+                    speakingAverageScore: data.speakingAverageScore || 0,
+                    speakingLevel: data.speakingLevel || 'Beginner',
+                    speakingTotalSubmissions: data.speakingTotalSubmissions || 0
+                });
+            }
+            fetchSpeakingProgress();
         }
-        fetchProgress();
-    }, [user]);
+        
+    }, [user, ieltsModule]);
+
+    console.log(WritingProgressData, SpeakingProgressData, user);
 
     return (
         <div className="grid grid-cols-3 gap-2 md:gap-4 mb-6 place-items-center">
             <div className="flex items-center gap-2 md:gap-3 w-fit bg-[#05D7A0] rounded-full py-2 px-2 md:px-6">
                 <div className='flex items-center gap-1'>
                     <h3 className="text-white text-sm">Level: </h3>
-                    <p className="text-white text-sm font-bold">{progressData.level}</p>
+                    <p className="text-white text-sm font-bold">{ieltsModule === 'writing' ? WritingProgressData.writingLevel : SpeakingProgressData.speakingLevel}</p>
                 </div>
             </div>
             <div className="flex items-center gap-2 md:gap-3 w-fit bg-[#9D6CFF] rounded-full py-2 px-2 md:px-6">
                 <div className='flex items-center gap-1'>
                     <h3 className="text-white text-sm">Avg Score: </h3>
-                    <p className="text-white text-sm font-bold">{(progressData.averageScore * 10).toFixed(1)}%</p>
+                    <p className="text-white text-sm font-bold">{(ieltsModule === 'writing' ? WritingProgressData.averageScore : SpeakingProgressData.speakingAverageScore * 10).toFixed(1)}%</p>
                 </div>
             </div>
 
-                <div className="flex items-center gap-2 md:gap-3 w-fit bg-[#FF4155] rounded-full py-2 px-2 md:px-6">
-                    <div className='flex items-center gap-1'>
+            <div className="flex items-center gap-2 md:gap-3 w-fit bg-[#FF4155] rounded-full py-2 px-2 md:px-6">
+                <div className='flex items-center gap-1'>
                     <h3 className="text-white text-sm">Submissions: </h3>
-                    <p className="text-white text-sm font-bold">{progressData.totalSubmissions}</p>
+                    <p className="text-white text-sm font-bold">{ieltsModule === 'writing' ? WritingProgressData.totalSubmissions : SpeakingProgressData.speakingTotalSubmissions}</p>
                 </div>
             </div>
         </div>
