@@ -484,7 +484,6 @@ const IELTSSpeaking = () => {
           )}
 
 
-
           {response && (
             <div className="mt-6">
               <SpeakingResult data={response} />
@@ -499,8 +498,6 @@ const IELTSSpeaking = () => {
               </button>
             </div>
           )}
-
-
         </div>
       </div>
     </div>
