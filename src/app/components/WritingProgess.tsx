@@ -10,7 +10,7 @@ interface WritingProgressData {
     averageScore: number;
     writingLevel: string;
     totalSubmissions: number;
-   
+
 }
 
 interface SpeakingProgressData {
@@ -25,7 +25,7 @@ const WritingProgess = ({ ieltsModule }: { ieltsModule: string }) => {
         email: '',
         phone: ''
     });
-    
+
     useEffect(() => {
         const storedUserInfo = localStorage.getItem('userInfo');
         if (storedUserInfo) {
@@ -45,45 +45,46 @@ const WritingProgess = ({ ieltsModule }: { ieltsModule: string }) => {
     });
 
     useEffect(() => {
-        if (ieltsModule === 'writing') {
-            const fetchWritingProgress = async () => {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/writing/progress`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ mysqlUserId: Number(user.phone), name: user.name, email: user.email, phone: user.phone })
-                })
-                const data = await response.json();
-                console.log('writing data', data);
-                setWritingProgressData({
-                    averageScore: data.averageScore || 0,
-                    writingLevel: data.writingLevel || 'Beginner',
-                    totalSubmissions: data.totalSubmissions || 0
-                });
-            }
-            fetchWritingProgress();
+        if (user) {
+            if (ieltsModule === 'writing') {
+                const fetchWritingProgress = async () => {
+                    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/writing/progress`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ mysqlUserId: Number(user.phone), name: user.name, email: user.email, phone: user.phone })
+                    })
+                    const data = await response.json();
+                    console.log('writing data', data);
+                    setWritingProgressData({
+                        averageScore: data.averageScore || 0,
+                        writingLevel: data.writingLevel || 'Beginner',
+                        totalSubmissions: data.totalSubmissions || 0
+                    });
+                }
+                fetchWritingProgress();
 
-        } else if (ieltsModule === 'speaking') {
-            const fetchSpeakingProgress = async () => {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/speaking/progress`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ mysqlUserId: Number(user.phone), name: user.name, email: user.email, phone: user.phone })
-                })
-                const data = await response.json();
-                console.log('speaking data', data);
-                setSpeakingProgressData({
-                    speakingAverageScore: data.speakingAverageScore || 0,
-                    speakingLevel: data.speakingLevel || 'Beginner',
-                    speakingTotalSubmissions: data.speakingTotalSubmissions || 0
-                });
+            } else if (ieltsModule === 'speaking') {
+                const fetchSpeakingProgress = async () => {
+                    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/speaking/progress`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ mysqlUserId: Number(user.phone), name: user.name, email: user.email, phone: user.phone })
+                    })
+                    const data = await response.json();
+                    console.log('speaking data', data);
+                    setSpeakingProgressData({
+                        speakingAverageScore: data.speakingAverageScore || 0,
+                        speakingLevel: data.speakingLevel || 'Beginner',
+                        speakingTotalSubmissions: data.speakingTotalSubmissions || 0
+                    });
+                }
+                fetchSpeakingProgress();
             }
-            fetchSpeakingProgress();
         }
-        
     }, [user, ieltsModule]);
 
     console.log(WritingProgressData, SpeakingProgressData, user);

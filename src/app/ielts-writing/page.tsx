@@ -294,16 +294,16 @@ const IELTSWriting = () => {
                 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200"
                     placeholder="Write your answer here..."
                     disabled={isLoading}
-                  spellCheck="false"
-                  autoCorrect="off"
-                  autoComplete="off"
-                  autoCapitalize="off"
-                  data-gramm="false"
-                  data-gramm-editor="false"
-                  data-enable-grammarly="false"
-                  onPaste={(e) => e.preventDefault()}
-                  onDrop={(e) => e.preventDefault()}
-                  onContextMenu={(e) => e.preventDefault()}
+                  // spellCheck="false"
+                  // autoCorrect="off"
+                  // autoComplete="off"
+                  // autoCapitalize="off"
+                  // data-gramm="false"
+                  // data-gramm-editor="false"
+                  // data-enable-grammarly="false"
+                  // onPaste={(e) => e.preventDefault()}
+                  // onDrop={(e) => e.preventDefault()}
+                  // onContextMenu={(e) => e.preventDefault()}
                   />
                 </div>
                 <div className="flex justify-between items-center">
@@ -367,7 +367,6 @@ const IELTSWriting = () => {
               </button>
             </div>
           )}
-
 
         </div>
       </div>

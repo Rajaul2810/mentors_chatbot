@@ -105,7 +105,8 @@ function Chatbot() {
     try {
       const response = await axios.post(API, {
         message: message,
-        category: category
+        category: category,
+        previousMessages: messages
       });
       console.log('response.data.response',response.data.response)
       setMessages(prev => [...prev, { text: response.data.response, sender: "Mentors" }]);

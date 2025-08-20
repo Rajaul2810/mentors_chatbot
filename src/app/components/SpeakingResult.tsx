@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { FaChartBar, FaLink, FaBook, FaSpellCheck, FaTrophy, FaLightbulb, FaArrowUp, FaExclamationTriangle, FaExclamationCircle, FaVolumeUp } from 'react-icons/fa';
+import React, { useRef, useState, useEffect } from 'react';
+import { FaChartBar, FaLink, FaBook, FaSpellCheck, FaTrophy, FaLightbulb, FaArrowUp, FaExclamationTriangle, FaExclamationCircle, FaVolumeUp, FaStop } from 'react-icons/fa';
 
 interface AssessmentCriteria {
   score: number;
@@ -36,17 +36,49 @@ interface AssessmentData {
 const SpeakingResult: React.FC<{ data: AssessmentData }> = ({ data }) => {
   // For text-to-speech
   const synthRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+
+  // Cleanup function for text-to-speech
+  useEffect(() => {
+    return () => {
+      if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+      synthRef.current = null;
+    };
+  }, []);
 
   const handleSpeak = () => {
     if (!data?.ReWriteImprovementVersion) return;
-    // Cancel any ongoing speech
-    window.speechSynthesis.cancel();
-    const utter = new window.SpeechSynthesisUtterance(data.ReWriteImprovementVersion);
-    utter.rate = 1;
-    utter.pitch = 1;
-    utter.lang = 'en-US';
-    synthRef.current = utter;
-    window.speechSynthesis.speak(utter);
+    
+    if (isSpeaking) {
+      // Stop speaking
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+      synthRef.current = null;
+    } else {
+      // Start speaking
+      window.speechSynthesis.cancel();
+      const utter = new window.SpeechSynthesisUtterance(data.ReWriteImprovementVersion);
+      utter.rate = 1;
+      utter.pitch = 1;
+      utter.lang = 'en-US';
+      
+      // Add event listeners to track speaking state
+      utter.onstart = () => setIsSpeaking(true);
+      utter.onend = () => setIsSpeaking(false);
+      utter.onerror = () => setIsSpeaking(false);
+      
+      synthRef.current = utter;
+      window.speechSynthesis.speak(utter);
+    }
+  };
+
+  // Helper function to parse AI usage percentage
+  const parseAiUsage = (aiUsage: string): number => {
+    if (!aiUsage) return 0;
+    const match = aiUsage.match(/(\d+(?:\.\d+)?)/);
+    return match ? parseFloat(match[1]) : 0;
   };
 
   const getScoreColor = (score: number | undefined): string => {
@@ -117,12 +149,12 @@ const SpeakingResult: React.FC<{ data: AssessmentData }> = ({ data }) => {
               <div className="text-xl font-bold text-gray-800 dark:text-white">{data?.TotalGrammerError}</div>
             </div>
 
-            <div className={`bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg ${data?.AiGenerateSpeaking > '10%' ? 'bg-red-500' : 'bg-green-500'}`}>
+            <div className={`bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg ${parseAiUsage(data?.AiGenerateSpeaking) > 10 ? 'bg-red-500' : 'bg-green-500'}`}>
               <div className="flex items-center gap-2 mb-1">
                 <FaSpellCheck className="text-blue-500" />
                 <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Using AI</span>
               </div>
-              <div className="text-xl font-bold text-gray-800 dark:text-white">{data?.AiGenerateSpeaking > '10%' ? 'Yes' : 'No'}</div>
+              <div className="text-xl font-bold text-gray-800 dark:text-white">{parseAiUsage(data?.AiGenerateSpeaking) > 10 ? 'Yes' : 'No'}</div>
             </div>
           </div>
           {
@@ -136,7 +168,6 @@ const SpeakingResult: React.FC<{ data: AssessmentData }> = ({ data }) => {
               <div className="group relative overflow-hidden bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-red-100 dark:bg-red-800/20 rounded-full -mr-16 -mt-16 blur-2xl group-hover:blur-3xl transition-all duration-300"></div>
                 <div className="relative">
-
                   <div>
                     <div className="flex items-center gap-3 mb-4">
                       <div className="p-2 bg-red-100 dark:bg-red-800/30 rounded-lg">
@@ -185,7 +216,7 @@ const SpeakingResult: React.FC<{ data: AssessmentData }> = ({ data }) => {
                     onClick={handleSpeak}
                     title="Listen to improved version"
                   >
-                    <FaVolumeUp className="text-blue-700 dark:text-blue-300 text-lg" />
+                    {isSpeaking ? <FaStop className="text-blue-700 dark:text-blue-300 text-lg" /> : <FaVolumeUp className="text-blue-700 dark:text-blue-300 text-lg" />}
                   </button>
                 )}
               </div>

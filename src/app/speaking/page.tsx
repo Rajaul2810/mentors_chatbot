@@ -185,7 +185,7 @@ const IELTSSpeaking = () => {
     setUserInfo(info);
     setShowUserModal(false);
   };
-  console.log('process.env.BACKEND_URL', process.env.NEXT_PUBLIC_BACKEND_URL);
+  //console.log('process.env.BACKEND_URL', process.env.NEXT_PUBLIC_BACKEND_URL);
 
   useEffect(() => {
     const fetchQuestion = async () => {
@@ -205,7 +205,7 @@ const IELTSSpeaking = () => {
           })
         });
         const data = await response.json();
-        console.log('speaking question', data);
+        //console.log('speaking question', data);
         if (data.question) {
           setQuestion(data.question);
         } else {
@@ -261,7 +261,7 @@ const IELTSSpeaking = () => {
 
     try {
       const formatedQuestion = question?.title + " " + (question?.subtopics?.join(" ") || "");
-      console.log('formatedQuestion', formatedQuestion);
+      //console.log('formatedQuestion', formatedQuestion);
       const submitData = {
         message: transcript,
         questionId: question?.id,
