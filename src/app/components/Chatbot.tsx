@@ -153,7 +153,7 @@ type IntentResponse = {
     setPhoneInput("");
     await submitLead(trimmed, course);
     setMessages(prev => [...prev, {
-      text: 'ধন্যবাদ। আমাদের কাউন্সেলর শীঘ্রই যোগাযোগ করবেন।',
+      text: 'ধন্যবাদ। আমাদের কাউন্সেলর শীঘ্রই যোগাযোগ করবেন। or WhatsApp: https://api.whatsapp.com/send?phone=8801713243400',
       sender: 'Mentors'
     }]);
   };
